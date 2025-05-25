@@ -1,5 +1,13 @@
 MWS Result File Version 20150206
-size=i:43
+size=i:44
+
+type=s:HIDDENITEM
+problemclass=s::8:1000
+visibility=s:hidden
+creation=s:internal
+lifetime=s:surviveparchange
+result=s:1
+files=s:simulation_overview.json
 
 type=s:HIDDENITEM
 problemclass=s::8:1000

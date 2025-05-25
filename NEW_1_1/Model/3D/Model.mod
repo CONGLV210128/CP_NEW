@@ -1125,7 +1125,7 @@ End With
 'STEADY STATE
 With Solver
      .SteadyStateDurationType "Number of pulses"
-     .NumberOfPulseWidths "20"
+     .NumberOfPulseWidths "100"
      .SteadyStateDurationTime "30"
      .SteadyStateDurationTimeAsDistance "1954.38"
      .StopCriteriaShowExcitation "False"
@@ -1258,5 +1258,83 @@ With Solver
      .AutoFreqStep "true", "1"
      .SetExcitationSignal "" 
      .SaveSettings
+End With
+
+'@ set mesh properties (Hexahedral)
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Mesh 
+     .MeshType "PBA" 
+     .SetCreator "High Frequency"
+End With 
+With MeshSettings 
+     .SetMeshType "Hex" 
+     .Set "Version", 1%
+     'MAX CELL - WAVELENGTH REFINEMENT 
+     .Set "StepsPerWaveNear", "30" 
+     .Set "StepsPerWaveFar", "30" 
+     .Set "WavelengthRefinementSameAsNear", "1" 
+     'MAX CELL - GEOMETRY REFINEMENT 
+     .Set "StepsPerBoxNear", "30" 
+     .Set "StepsPerBoxFar", "1" 
+     .Set "MaxStepNear", "0" 
+     .Set "MaxStepFar", "0" 
+     .Set "ModelBoxDescrNear", "maxedge" 
+     .Set "ModelBoxDescrFar", "maxedge" 
+     .Set "UseMaxStepAbsolute", "0" 
+     .Set "GeometryRefinementSameAsNear", "0" 
+     'MIN CELL 
+     .Set "UseRatioLimitGeometry", "1" 
+     .Set "RatioLimitGeometry", "20" 
+     .Set "MinStepGeometryX", "0" 
+     .Set "MinStepGeometryY", "0" 
+     .Set "MinStepGeometryZ", "0" 
+     .Set "UseSameMinStepGeometryXYZ", "1" 
+End With 
+With MeshSettings 
+     .Set "PlaneMergeVersion", "2" 
+End With 
+With MeshSettings 
+     .SetMeshType "Hex" 
+     .Set "FaceRefinementType", "NONE" 
+     .Set "FaceRefinementRatio", "2" 
+     .Set "FaceRefinementStep", "0" 
+     .Set "FaceRefinementNSteps", "2" 
+     .Set "EllipseRefinementType", "NONE" 
+     .Set "EllipseRefinementRatio", "2" 
+     .Set "EllipseRefinementStep", "0" 
+     .Set "EllipseRefinementNSteps", "2" 
+     .Set "FaceRefinementBufferLines", "3" 
+     .Set "EdgeRefinementType", "RATIO" 
+     .Set "EdgeRefinementRatio", "6" 
+     .Set "EdgeRefinementStep", "0" 
+     .Set "EdgeRefinementBufferLines", "3" 
+     .Set "RefineEdgeMaterialGlobal", "0" 
+     .Set "RefineAxialEdgeGlobal", "0" 
+     .Set "BufferLinesNear", "3" 
+     .Set "UseDielectrics", "1" 
+     .Set "EquilibrateOn", "1" 
+     .Set "Equilibrate", "1.5" 
+     .Set "IgnoreThinPanelMaterial", "0" 
+End With 
+With MeshSettings 
+     .SetMeshType "Hex" 
+     .Set "SnapToAxialEdges", "1"
+     .Set "SnapToPlanes", "1"
+     .Set "SnapToSpheres", "1"
+     .Set "SnapToEllipses", "1"
+     .Set "SnapToCylinders", "1"
+     .Set "SnapToCylinderCenters", "1"
+     .Set "SnapToEllipseCenters", "1"
+     .Set "SnapToTori", "1"
+End With 
+With Mesh 
+     .ConnectivityCheck "True"
+     .UsePecEdgeModel "True" 
+     .PointAccEnhancement "0" 
+     .TSTVersion "0"
+	  .PBAVersion "2023101624" 
+     .SetCADProcessingMethod "MultiThread22", "-1" 
+     .SetGPUForMatrixCalculationDisabled "False" 
 End With
 
