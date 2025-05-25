@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CSTAuxiliaryGeometry version="20170928" creator="modeler">
   <Objects>
-    <Object name="Ports\port1" id="1">
-      <LineSet points="-1.79999995 -6.80000019 -5 1.79999995 -6.80000019 -5 1.79999995 -3.20000005 -5 -1.79999995 -3.20000005 -5 -1.79999995 -6.80000019 -5" stripped="1" material="$PortMaterial$" text="1" short="1"/>
+    <Object name="Ports\port1" id="8">
+      <LineSet points="-1.79999995 -6.80000019 -2 1.79999995 -6.80000019 -2 1.79999995 -3.20000005 -2 -1.79999995 -3.20000005 -2 -1.79999995 -6.80000019 -2" stripped="1" material="$PortMaterial$" text="1" short="1"/>
     </Object>
   </Objects>
   <Materials/>

@@ -734,3 +734,50 @@ End With
 '[VERSION]2024.1|33.0.1|20231016[/VERSION]
 Solid.Subtract "component1:RADIAL", "cut2:cut7"
 
+'@ define brick: cut2:cut8
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Brick
+     .Reset 
+     .Name "cut8" 
+     .Component "cut2" 
+     .Material "Vacuum" 
+     .Xrange "-w2/2", "w2/2" 
+     .Yrange "-x-0.1", "-l1/2+0.1" 
+     .Zrange "h+t1", "h+t1+t1" 
+     .Create
+End With
+
+'@ boolean subtract shapes: component1:RADIAL, cut2:cut8
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:RADIAL", "cut2:cut8"
+
+'@ define time domain solver parameters
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Mesh.SetCreator "High Frequency" 
+
+With Solver 
+     .Method "Hexahedral"
+     .CalculationType "TD-S"
+     .StimulationPort "All"
+     .StimulationMode "All"
+     .SteadyStateLimit "-40"
+     .MeshAdaption "False"
+     .AutoNormImpedance "False"
+     .NormingImpedance "50"
+     .CalculateModesOnly "False"
+     .SParaSymmetry "False"
+     .StoreTDResultsInCache  "False"
+     .RunDiscretizerOnly "False"
+     .FullDeembedding "False"
+     .SuperimposePLWExcitation "False"
+     .UseSensitivityAnalysis "False"
+End With
+
+'@ set PBA version
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Discretizer.PBAVersion "2023101624"
+
