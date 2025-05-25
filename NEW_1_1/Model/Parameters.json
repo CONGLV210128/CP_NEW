@@ -1,0 +1,115 @@
+{
+    "parameters": [
+        {
+            "expr": "12",
+            "name": "x",
+            "value": "12"
+        },
+        {
+            "expr": "0.03556",
+            "name": "t",
+            "value": "0.03556"
+        },
+        {
+            "expr": "0.8",
+            "name": "h",
+            "value": "0.8"
+        },
+        {
+            "expr": "3",
+            "name": "R0",
+            "value": "3"
+        },
+        {
+            "expr": "20",
+            "name": "l1",
+            "value": "20"
+        },
+        {
+            "expr": "0.4",
+            "name": "w1",
+            "value": "0.4"
+        },
+        {
+            "expr": "30",
+            "name": "gama",
+            "value": "30"
+        },
+        {
+            "expr": "0.03556",
+            "name": "t1",
+            "value": "0.03556"
+        },
+        {
+            "expr": "150",
+            "name": "sigma",
+            "value": "150"
+        },
+        {
+            "expr": "0.5",
+            "name": "u1",
+            "value": "0.5"
+        },
+        {
+            "expr": "0",
+            "name": "u2",
+            "value": "0"
+        },
+        {
+            "expr": "0",
+            "name": "x1",
+            "value": "0"
+        },
+        {
+            "expr": "-5",
+            "name": "y1",
+            "value": "-5"
+        },
+        {
+            "expr": "-2",
+            "name": "k",
+            "value": "-2"
+        },
+        {
+            "expr": "1",
+            "name": "u3",
+            "value": "1"
+        },
+        {
+            "expr": "1.8",
+            "name": "u4",
+            "value": "1.8"
+        },
+        {
+            "expr": "u4+t1",
+            "name": "u5",
+            "value": "1.83556"
+        },
+        {
+            "expr": "14",
+            "name": "l2",
+            "value": "14"
+        },
+        {
+            "expr": "0.5",
+            "name": "z1",
+            "value": "0.5"
+        },
+        {
+            "expr": "-8",
+            "name": "x2",
+            "value": "-8"
+        },
+        {
+            "expr": "2",
+            "name": "y2",
+            "value": "2"
+        },
+        {
+            "expr": "0.3",
+            "name": "w2",
+            "value": "0.3"
+        }
+    ],
+    "version": 1
+}

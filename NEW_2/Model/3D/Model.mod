@@ -171,3 +171,116 @@ ChangeSolverType("HF Time Domain")
 
 '----------------------------------------------------------------------------
 
+'@ define material: Copper (annealed)
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Material
+     .Reset
+     .Name "Copper (annealed)"
+     .Folder ""
+     .FrqType "static"
+     .Type "Normal"
+     .SetMaterialUnit "Hz", "mm"
+     .Epsilon "1"
+     .Mu "1.0"
+     .Kappa "5.8e+007"
+     .TanD "0.0"
+     .TanDFreq "0.0"
+     .TanDGiven "False"
+     .TanDModel "ConstTanD"
+     .KappaM "0"
+     .TanDM "0.0"
+     .TanDMFreq "0.0"
+     .TanDMGiven "False"
+     .TanDMModel "ConstTanD"
+     .DispModelEps "None"
+     .DispModelMu "None"
+     .DispersiveFittingSchemeEps "Nth Order"
+     .DispersiveFittingSchemeMu "Nth Order"
+     .UseGeneralDispersionEps "False"
+     .UseGeneralDispersionMu "False"
+     .FrqType "all"
+     .Type "Lossy metal"
+     .SetMaterialUnit "GHz", "mm"
+     .Mu "1.0"
+     .Kappa "5.8e+007"
+     .Rho "8930.0"
+     .ThermalType "Normal"
+     .ThermalConductivity "401.0"
+     .SpecificHeat "390", "J/K/kg"
+     .MetabolicRate "0"
+     .BloodFlow "0"
+     .VoxelConvection "0"
+     .MechanicsType "Isotropic"
+     .YoungsModulus "120"
+     .PoissonsRatio "0.33"
+     .ThermalExpansionRate "17"
+     .Colour "1", "1", "0"
+     .Wireframe "False"
+     .Reflection "False"
+     .Allowoutline "True"
+     .Transparentoutline "False"
+     .Transparency "0"
+     .Create
+End With
+
+'@ new component: component1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Component.New "component1"
+
+'@ define brick: component1:gnd
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Brick
+     .Reset 
+     .Name "gnd" 
+     .Component "component1" 
+     .Material "Copper (annealed)" 
+     .Xrange "-x/2", "x/2" 
+     .Yrange "-y/2", "y/2" 
+     .Zrange "0", "t1" 
+     .Create
+End With
+
+'@ define cylinder: component1:cut1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "cut1" 
+     .Component "component1" 
+     .Material "Vacuum" 
+     .OuterRadius "u1" 
+     .InnerRadius "0" 
+     .Axis "z" 
+     .Zrange "0", "t1" 
+     .Xcenter "0" 
+     .Ycenter "-0" 
+     .Segments "0" 
+     .Create 
+End With
+
+'@ boolean subtract shapes: component1:gnd, component1:cut1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:gnd", "component1:cut1"
+
+'@ define cylinder: component1:feed1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "feed1" 
+     .Component "component1" 
+     .Material "Copper (annealed)" 
+     .OuterRadius "u2" 
+     .InnerRadius "0" 
+     .Axis "z" 
+     .Zrange "0", "t1+h1+t1+h2" 
+     .Xcenter "0" 
+     .Ycenter "-0" 
+     .Segments "0" 
+     .Create 
+End With
+

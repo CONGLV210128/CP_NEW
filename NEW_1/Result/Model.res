@@ -1,6 +1,14 @@
 MWS Result File Version 20150206
 size=i:96
 
+type=s:HIDDENITEM
+problemclass=s::8:1000
+visibility=s:hidden
+creation=s:internal
+lifetime=s:surviveparchange
+result=s:1
+files=s:simulation_overview.json
+
 type=s:DATA_FOLDER
 problemclass=s::8:1000
 visibility=s:hidden
@@ -61,62 +69,6 @@ type=s:HIDDENITEM
 problemclass=s::8:1000
 visibility=s:hidden
 creation=s:internal
-lifetime=s:solverstart
-result=s:0
-files=s:PBAMeshDetails.axg
-
-type=s:HIDDENITEM
-problemclass=s::8:1000
-visibility=s:hidden
-creation=s:internal
-lifetime=s:solverstart
-result=s:0
-files=s:PBAConnectivity.axg
-
-type=s:HIDDENITEM
-problemclass=s::8:1000
-visibility=s:hidden
-creation=s:internal
-lifetime=s:solverstart
-result=s:0
-files=s:PBAMeshFeedback.axg
-
-type=s:HIDDENITEM
-problemclass=s::8:1000
-visibility=s:hidden
-creation=s:internal
-lifetime=s:rebuild
-result=s:0
-files=s:ml_info.dat
-
-type=s:HIDDENITEM
-problemclass=s::8:1000
-visibility=s:hidden
-creation=s:internal
-lifetime=s:survivemeshadapt
-result=s:1
-files=s:PP.fmm
-
-type=s:HIDDENITEM
-problemclass=s::8:1000
-visibility=s:hidden
-creation=s:internal
-lifetime=s:survivemeshadapt
-result=s:1
-files=s:PP.sid
-
-type=s:HIDDENITEM
-problemclass=s::8:1000
-visibility=s:hidden
-creation=s:internal
-lifetime=s:survivemeshadapt
-result=s:1
-files=s:model.gex
-
-type=s:HIDDENITEM
-problemclass=s::8:1000
-visibility=s:hidden
-creation=s:internal
 lifetime=s:rebuild
 result=s:1
 files=s:Port1_Info1[2.15].mmd
@@ -126,16 +78,8 @@ problemclass=s::8:1000
 visibility=s:hidden
 creation=s:internal
 lifetime=s:rebuild
-result=s:1
-files=s:World.fid
-
-type=s:HIDDENITEM
-problemclass=s::8:1000
-visibility=s:hidden
-creation=s:internal
-lifetime=s:surviveparchange
-result=s:1
-files=s:simulation_overview.json
+result=s:0
+files=s:ml_info.dat
 
 type=s:HIDDENITEM
 problemclass=s::8:1000
@@ -285,36 +229,6 @@ result=s:1
 treepath=s:1D Results\Port Information\Wave Impedance\1(1)
 files=s:zwave_1(1).sig
 
-type=s:MESH_FEEDBACK
-problemclass=s::8:1000
-visibility=s:visible
-creation=s:internal
-lifetime=s:solverstart
-result=s:0
-treepath=s:Mesh\Information\PBA
-files=s:PBAMeshFeedback.rex
-ylabel=s:Mesh Feedback
-
-type=s:MESH_FEEDBACK
-problemclass=s::8:1000
-visibility=s:visible
-creation=s:internal
-lifetime=s:solverstart
-result=s:0
-treepath=s:Mesh\Information\Connectivity
-files=s:PBAConnectivity.rex
-ylabel=s:Mesh Feedback
-
-type=s:MESH_FEEDBACK
-problemclass=s::8:1000
-visibility=s:visible
-creation=s:internal
-lifetime=s:solverstart
-result=s:0
-treepath=s:Mesh\Information\PBADetails
-files=s:PBAMeshDetails.rex
-ylabel=s:Mesh Feedback
-
 type=s:XYSIGNAL
 subtype=s:complex
 problemclass=s::8:1000
@@ -445,6 +359,26 @@ result=s:1
 treepath=s:1D Results\Energy\Energy [1]
 files=s:1.eng
 
+type=s:XYSIGNAL
+subtype=s:complex
+problemclass=s::8:1000
+visibility=s:visible
+creation=s:internal
+lifetime=s:rebuild
+result=s:1
+treepath=s:1D Results\S-Parameters (AR)\S1,1
+files=s:ar^cS1(1)1(1).sig
+
+type=s:XYSIGNAL
+subtype=s:balance
+problemclass=s::8:1000
+visibility=s:visible
+creation=s:internal
+lifetime=s:rebuild
+result=s:1
+treepath=s:1D Results\Balance (AR)\Balance [1]
+files=s:ar_1.bil
+
 type=s:FARFIELD
 problemclass=s::8:1000
 visibility=s:visible
@@ -494,6 +428,36 @@ lifetime=s:rebuild
 result=s:1
 treepath=s:1D Results\VSWR\VSWR1
 files=s:vswr1(1).sig
+
+type=s:XYSIGNAL
+subtype=s:complex
+problemclass=s::8:1000
+visibility=s:visible
+creation=s:internal
+lifetime=s:rebuild
+result=s:1
+treepath=s:1D Results\Y Matrix (AR)\Y1,1
+files=s:yarcmplx1(1)1(1).sig
+
+type=s:XYSIGNAL
+subtype=s:complex
+problemclass=s::8:1000
+visibility=s:visible
+creation=s:internal
+lifetime=s:rebuild
+result=s:1
+treepath=s:1D Results\Z Matrix (AR)\Z1,1
+files=s:zarcmplx1(1)1(1).sig
+
+type=s:XYSIGNAL
+subtype=s:linear
+problemclass=s::8:1000
+visibility=s:visible
+creation=s:internal
+lifetime=s:rebuild
+result=s:1
+treepath=s:1D Results\VSWR (AR)\VSWR1
+files=s:vwsr_ar1(1).sig
 
 type=s:XYSIGNAL
 subtype=s:complex
@@ -792,6 +756,28 @@ creation=s:internal
 lifetime=s:surviveparchange
 result=s:1
 parametric=s:P
+treepath=s:1D Results\S-Parameters (AR)\S1,1
+files=s:ar^cS1(1)1(1).sig
+
+type=s:XYSIGNAL
+subtype=s:balance
+problemclass=s::8:1000
+visibility=s:visible
+creation=s:internal
+lifetime=s:surviveparchange
+result=s:1
+parametric=s:P
+treepath=s:1D Results\Balance (AR)\Balance [1]
+files=s:ar_1.bil
+
+type=s:XYSIGNAL
+subtype=s:complex
+problemclass=s::8:1000
+visibility=s:visible
+creation=s:internal
+lifetime=s:surviveparchange
+result=s:1
+parametric=s:P
 treepath=s:1D Results\Y Matrix\Y1,1
 files=s:ycmplx1(1)1(1).sig
 
@@ -816,6 +802,39 @@ result=s:1
 parametric=s:P
 treepath=s:1D Results\VSWR\VSWR1
 files=s:vswr1(1).sig
+
+type=s:XYSIGNAL
+subtype=s:complex
+problemclass=s::8:1000
+visibility=s:visible
+creation=s:internal
+lifetime=s:surviveparchange
+result=s:1
+parametric=s:P
+treepath=s:1D Results\Y Matrix (AR)\Y1,1
+files=s:yarcmplx1(1)1(1).sig
+
+type=s:XYSIGNAL
+subtype=s:complex
+problemclass=s::8:1000
+visibility=s:visible
+creation=s:internal
+lifetime=s:surviveparchange
+result=s:1
+parametric=s:P
+treepath=s:1D Results\Z Matrix (AR)\Z1,1
+files=s:zarcmplx1(1)1(1).sig
+
+type=s:XYSIGNAL
+subtype=s:linear
+problemclass=s::8:1000
+visibility=s:visible
+creation=s:internal
+lifetime=s:surviveparchange
+result=s:1
+parametric=s:P
+treepath=s:1D Results\VSWR (AR)\VSWR1
+files=s:vwsr_ar1(1).sig
 
 type=s:XYSIGNAL
 subtype=s:complex

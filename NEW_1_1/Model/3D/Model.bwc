@@ -1,0 +1,58 @@
+3300 0 3 0           
+13 CST_HEXMESHER 14 ACIS 33.0.1 NT 24 Sun May 25 17:23:57 2025 
+1 9.9999999999999995e-07 1e-10 
+T @77 _J73XMKUFUKEFXZS7PRQFXDJ42_MVGNU4DFVMC75QCDCKE6EBDNVF27B7C84RA67K8MUSPPWE8TCN 
+face $3 -1 -1 $-1 $-1 $4 $-1 $-1 $5 forward single F F #
+face $6 -1 -1 $-1 $-1 $7 $-1 $-1 $8 forward single F F #
+face $9 -1 -1 $-1 $-1 $10 $-1 $-1 $11 forward single F F #
+name_attrib-gen-attrib $-1 -1 $12 $-1 $0 2 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 @12 ncut2:solid2 #
+loop $-1 -1 -1 $-1 $13 $14 $0 F unknown #
+plane-surface $-1 -1 -1 $-1 1.1499999999999999 -5 -2 0 0 -1 -1 -0 -0 forward_v I I I I #
+name_attrib-gen-attrib $-1 -1 $15 $-1 $1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 @12 ncut2:solid2 #
+loop $-1 -1 -1 $-1 $16 $17 $1 F unknown #
+plane-surface $-1 -1 -1 $-1 1.1499999999999999 -5 -2 0 0 -1 -1 -0 -0 forward_v I I I I #
+name_attrib-gen-attrib $-1 -1 $18 $-1 $2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 @12 ncut2:solid1 #
+loop $-1 -1 -1 $-1 $-1 $19 $2 F unknown #
+plane-surface $-1 -1 -1 $-1 0 -5 0 0 0 -1 -1 0 0 forward_v I I I I #
+integer_attrib-name_attrib-gen-attrib $-1 -1 $20 $3 $0 2 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 @17 backwd_pickNumber 1 #
+loop $-1 -1 -1 $-1 $-1 $21 $0 F unknown #
+coedge $-1 -1 -1 $-1 $14 $14 $-1 $22 reversed $4 $-1 #
+integer_attrib-name_attrib-gen-attrib $-1 -1 $23 $6 $1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 @17 backwd_pickNumber 1 #
+loop $-1 -1 -1 $-1 $-1 $24 $1 F unknown #
+coedge $-1 -1 -1 $-1 $17 $17 $-1 $25 reversed $7 $-1 #
+integer_attrib-name_attrib-gen-attrib $-1 -1 $26 $9 $2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 @17 backwd_pickNumber 1 #
+coedge $-1 -1 -1 $-1 $19 $19 $-1 $27 forward $10 $-1 #
+integer_attrib-name_attrib-gen-attrib $-1 -1 $28 $12 $0 2 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 @18 backwd_blockNumber 23 #
+coedge $-1 -1 -1 $-1 $21 $21 $-1 $29 forward $13 $-1 #
+edge $-1 -1 -1 $-1 $30 -1.2829243840112922e-15 $30 6.2831853071795853 $14 $31 forward @7 unknown F #
+integer_attrib-name_attrib-gen-attrib $-1 -1 $32 $15 $1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 @18 backwd_blockNumber 27 #
+coedge $-1 -1 -1 $-1 $24 $24 $-1 $33 forward $16 $-1 #
+edge $34 -1 -1 $-1 $35 -1.2829243840112922e-15 $35 6.2831853071795853 $17 $36 forward @7 unknown F #
+integer_attrib-name_attrib-gen-attrib $-1 -1 $37 $18 $2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 @18 backwd_blockNumber 50 #
+edge $38 -1 -1 $-1 $39 0 $39 6.2831853071795862 $19 $40 forward @7 unknown F #
+integer_attrib-name_attrib-gen-attrib $-1 -1 $-1 $20 $0 2 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 @9 backwd_id 1 #
+edge $-1 -1 -1 $-1 $41 0 $41 6.2831853071795862 $21 $42 forward @7 unknown F #
+vertex $-1 -1 -1 $-1 $22 $43 #
+ellipse-curve $-1 -1 -1 $-1 0 -5.0000000000000009 -2 0 0 1 1.8 3.1974423109204509e-15 -3.3566899260151217e-16 1 I I #
+integer_attrib-name_attrib-gen-attrib $-1 -1 $44 $23 $1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 @9 backwd_id 1 #
+edge $45 -1 -1 $-1 $46 0 $46 6.2831853071795862 $24 $47 forward @7 unknown F #
+name_attrib-gen-attrib $-1 -1 $-1 $-1 $25 2 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 @3 eif #
+vertex $-1 -1 -1 $-1 $25 $48 #
+ellipse-curve $-1 -1 -1 $-1 0 -5.0000000000000009 -2 0 0 1 1.8 3.1974423109204509e-15 -3.3566899260151217e-16 1 I I #
+integer_attrib-name_attrib-gen-attrib $-1 -1 $49 $26 $2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 @9 backwd_id 1 #
+name_attrib-gen-attrib $-1 -1 $-1 $-1 $27 2 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 @3 eif #
+vertex $-1 -1 -1 $-1 $27 $50 #
+ellipse-curve $-1 -1 -1 $-1 0 -5 0 0 0 -1 0.5 0 0 1 I I #
+vertex $-1 -1 -1 $-1 $29 $51 #
+ellipse-curve $-1 -1 -1 $-1 0 -5.0000000000000009 -2 0 0 1 0.5 8.8817841970012523e-16 -9.3241386833753381e-17 1 I I #
+point $-1 -1 -1 $-1 1.8 -5 -2 #
+integer_attrib-name_attrib-gen-attrib $-1 -1 $-1 $32 $1 2 0 0 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 @3 fif 0 #
+name_attrib-gen-attrib $-1 -1 $-1 $-1 $33 2 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 @3 eif #
+vertex $-1 -1 -1 $-1 $33 $52 #
+ellipse-curve $-1 -1 -1 $-1 0 -5.0000000000000009 -2 0 0 1 0.5 8.8817841970012523e-16 -9.3241386833753381e-17 1 I I #
+point $-1 -1 -1 $-1 1.8 -5 -2 #
+integer_attrib-name_attrib-gen-attrib $-1 -1 $-1 $37 $2 2 0 0 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 @3 fif 0 #
+point $-1 -1 -1 $-1 0.5 -5 0 #
+point $-1 -1 -1 $-1 0.5 -5 -2 #
+point $-1 -1 -1 $-1 0.5 -5 -2 #
+End-of-ACIS-data 

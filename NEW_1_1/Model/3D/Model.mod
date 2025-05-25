@@ -1,0 +1,1262 @@
+'# MWS Version: Version 2024.1 - Oct 16 2023 - ACIS 33.0.1 -
+
+'# length = mm
+'# frequency = GHz
+'# time = ns
+'# frequency range: fmin = 0.3 fmax = 4
+'# created = '[VERSION]2024.1|33.0.1|20231016[/VERSION]
+
+
+'@ use template: Antenna - Planar.cfg
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+'set the units
+With Units
+    .SetUnit "Length", "mm"
+    .SetUnit "Frequency", "GHz"
+    .SetUnit "Voltage", "V"
+    .SetUnit "Resistance", "Ohm"
+    .SetUnit "Inductance", "nH"
+    .SetUnit "Temperature",  "degC"
+    .SetUnit "Time", "ns"
+    .SetUnit "Current", "A"
+    .SetUnit "Conductance", "S"
+    .SetUnit "Capacitance", "pF"
+End With
+
+ThermalSolver.AmbientTemperature "0"
+
+'----------------------------------------------------------------------------
+
+'set the frequency range
+Solver.FrequencyRange "0.3", "4"
+
+'----------------------------------------------------------------------------
+
+Plot.DrawBox True
+
+With Background
+     .Type "Normal"
+     .Epsilon "1.0"
+     .Mu "1.0"
+     .XminSpace "0.0"
+     .XmaxSpace "0.0"
+     .YminSpace "0.0"
+     .YmaxSpace "0.0"
+     .ZminSpace "0.0"
+     .ZmaxSpace "0.0"
+End With
+
+With Boundary
+     .Xmin "expanded open"
+     .Xmax "expanded open"
+     .Ymin "expanded open"
+     .Ymax "expanded open"
+     .Zmin "expanded open"
+     .Zmax "expanded open"
+     .Xsymmetry "none"
+     .Ysymmetry "none"
+     .Zsymmetry "none"
+End With
+
+' optimize mesh settings for planar structures
+
+With Mesh
+     .MergeThinPECLayerFixpoints "True"
+     .RatioLimit "20"
+     .AutomeshRefineAtPecLines "True", "6"
+     .FPBAAvoidNonRegUnite "True"
+     .ConsiderSpaceForLowerMeshLimit "False"
+     .MinimumStepNumber "5"
+     .AnisotropicCurvatureRefinement "True"
+     .AnisotropicCurvatureRefinementFSM "True"
+End With
+
+With MeshSettings
+     .SetMeshType "Hex"
+     .Set "RatioLimitGeometry", "20"
+     .Set "EdgeRefinementOn", "1"
+     .Set "EdgeRefinementRatio", "6"
+End With
+
+With MeshSettings
+     .SetMeshType "HexTLM"
+     .Set "RatioLimitGeometry", "20"
+End With
+
+With MeshSettings
+     .SetMeshType "Tet"
+     .Set "VolMeshGradation", "1.5"
+     .Set "SrfMeshGradation", "1.5"
+End With
+
+' change mesh adaption scheme to energy
+' 		(planar structures tend to store high energy
+'     	 locally at edges rather than globally in volume)
+
+MeshAdaption3D.SetAdaptionStrategy "Energy"
+
+' switch on FD-TET setting for accurate farfields
+
+FDSolver.ExtrudeOpenBC "True"
+
+PostProcess1D.ActivateOperation "vswr", "true"
+PostProcess1D.ActivateOperation "yz-matrices", "true"
+
+With FarfieldPlot
+	.ClearCuts ' lateral=phi, polar=theta
+	.AddCut "lateral", "0", "1"
+	.AddCut "lateral", "90", "1"
+	.AddCut "polar", "90", "1"
+End With
+
+'----------------------------------------------------------------------------
+
+Dim sDefineAt As String
+sDefineAt = "0.3;4"
+Dim sDefineAtName As String
+sDefineAtName = "0.3;4"
+Dim sDefineAtToken As String
+sDefineAtToken = "f="
+Dim aFreq() As String
+aFreq = Split(sDefineAt, ";")
+Dim aNames() As String
+aNames = Split(sDefineAtName, ";")
+
+Dim nIndex As Integer
+For nIndex = LBound(aFreq) To UBound(aFreq)
+
+Dim zz_val As String
+zz_val = aFreq (nIndex)
+Dim zz_name As String
+zz_name = sDefineAtToken & aNames (nIndex)
+
+' Define E-Field Monitors
+With Monitor
+    .Reset
+    .Name "e-field ("& zz_name &")"
+    .Dimension "Volume"
+    .Domain "Frequency"
+    .FieldType "Efield"
+    .MonitorValue  zz_val
+    .Create
+End With
+
+' Define Farfield Monitors
+With Monitor
+    .Reset
+    .Name "farfield ("& zz_name &")"
+    .Domain "Frequency"
+    .FieldType "Farfield"
+    .MonitorValue  zz_val
+    .ExportFarfieldSource "False"
+    .Create
+End With
+
+Next
+
+'----------------------------------------------------------------------------
+
+With MeshSettings
+     .SetMeshType "Hex"
+     .Set "Version", 1%
+End With
+
+With Mesh
+     .MeshType "PBA"
+End With
+
+'set the solver type
+ChangeSolverType("HF Time Domain")
+
+'----------------------------------------------------------------------------
+
+'@ define material: FR-4 (loss free)
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Material
+     .Reset
+     .Name "FR-4 (loss free)"
+     .Folder ""
+     .FrqType "all"
+     .Type "Normal"
+     .SetMaterialUnit "GHz", "mm"
+     .Epsilon "4.3"
+     .Mu "1.0"
+     .Kappa "0.0"
+     .TanD "0.0"
+     .TanDFreq "0.0"
+     .TanDGiven "False"
+     .TanDModel "ConstTanD"
+     .KappaM "0.0"
+     .TanDM "0.0"
+     .TanDMFreq "0.0"
+     .TanDMGiven "False"
+     .TanDMModel "ConstKappa"
+     .DispModelEps "None"
+     .DispModelMu "None"
+     .DispersiveFittingSchemeEps "General 1st"
+     .DispersiveFittingSchemeMu "General 1st"
+     .UseGeneralDispersionEps "False"
+     .UseGeneralDispersionMu "False"
+     .Rho "0.0"
+     .ThermalType "Normal"
+     .ThermalConductivity "0.3"
+     .SetActiveMaterial "all"
+     .Colour "0.75", "0.95", "0.85"
+     .Wireframe "False"
+     .Transparency "0"
+     .Create
+End With
+
+'@ new component: component1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Component.New "component1"
+
+'@ define cylinder: component1:GND
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "GND" 
+     .Component "component1" 
+     .Material "FR-4 (loss free)" 
+     .OuterRadius "x+2" 
+     .InnerRadius "0" 
+     .Axis "z" 
+     .Zrange "t", "t+h" 
+     .Xcenter "0" 
+     .Ycenter "0" 
+     .Segments "0" 
+     .Create 
+End With
+
+'@ define material: Copper (annealed)
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Material
+     .Reset
+     .Name "Copper (annealed)"
+     .Folder ""
+     .FrqType "static"
+     .Type "Normal"
+     .SetMaterialUnit "Hz", "mm"
+     .Epsilon "1"
+     .Mu "1.0"
+     .Kappa "5.8e+007"
+     .TanD "0.0"
+     .TanDFreq "0.0"
+     .TanDGiven "False"
+     .TanDModel "ConstTanD"
+     .KappaM "0"
+     .TanDM "0.0"
+     .TanDMFreq "0.0"
+     .TanDMGiven "False"
+     .TanDMModel "ConstTanD"
+     .DispModelEps "None"
+     .DispModelMu "None"
+     .DispersiveFittingSchemeEps "Nth Order"
+     .DispersiveFittingSchemeMu "Nth Order"
+     .UseGeneralDispersionEps "False"
+     .UseGeneralDispersionMu "False"
+     .FrqType "all"
+     .Type "Lossy metal"
+     .SetMaterialUnit "GHz", "mm"
+     .Mu "1.0"
+     .Kappa "5.8e+007"
+     .Rho "8930.0"
+     .ThermalType "Normal"
+     .ThermalConductivity "401.0"
+     .SpecificHeat "390", "J/K/kg"
+     .MetabolicRate "0"
+     .BloodFlow "0"
+     .VoxelConvection "0"
+     .MechanicsType "Isotropic"
+     .YoungsModulus "120"
+     .PoissonsRatio "0.33"
+     .ThermalExpansionRate "17"
+     .Colour "1", "1", "0"
+     .Wireframe "False"
+     .Reflection "False"
+     .Allowoutline "True"
+     .Transparentoutline "False"
+     .Transparency "0"
+     .Create
+End With
+
+'@ define cylinder: component1:GND_
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "GND_" 
+     .Component "component1" 
+     .Material "Copper (annealed)" 
+     .OuterRadius "x" 
+     .InnerRadius "0" 
+     .Axis "z" 
+     .Zrange "0", "t" 
+     .Xcenter "0" 
+     .Ycenter "0" 
+     .Segments "0" 
+     .Create 
+End With
+
+'@ define cylinder: component1:RADIAL
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "RADIAL" 
+     .Component "component1" 
+     .Material "Copper (annealed)" 
+     .OuterRadius "x" 
+     .InnerRadius "R0" 
+     .Axis "z" 
+     .Zrange "h+t", "h+t+t" 
+     .Xcenter "0" 
+     .Ycenter "0" 
+     .Segments "0" 
+     .Create 
+End With
+
+'@ define brick: component1:cut1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Brick
+     .Reset 
+     .Name "cut1" 
+     .Component "component1" 
+     .Material "Vacuum" 
+     .Xrange "-l1/2", "l1/2" 
+     .Yrange "-w1/2", "w1/2" 
+     .Zrange "h+t", "h+t+t" 
+     .Create
+End With
+
+'@ boolean subtract shapes: component1:RADIAL, component1:cut1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:RADIAL", "component1:cut1"
+
+'@ define curve analytical: curve1:analytical1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With AnalyticalCurve
+     .Reset 
+     .Name "analytical1" 
+     .Curve "curve1" 
+     .LawX "t" 
+     .LawY "sqrt(l1^2/4-t^2)-w1/2" 
+     .LawZ "h+t1+t1" 
+     .ParameterRange "-l1/2", "l1/2*cos(gama/180*pi)" 
+     .Create
+End With
+
+
+'@ new component: cut2
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Component.New "cut2"
+
+'@ define curve analytical: curve1:analytical2
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With AnalyticalCurve
+     .Reset 
+     .Name "analytical2" 
+     .Curve "curve1" 
+     .LawX "t" 
+     .LawY "-sqrt(l1^2/4-t^2)+w1/2" 
+     .LawZ "h+t1+t1" 
+     .ParameterRange "l1/2*cos(sigma/180*pi)", "l1/2" 
+     .Create
+End With
+
+'@ define tracefromcurves: cut2:cut1
+_*
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With TraceFromCurve 
+     .Reset 
+     .Name "cut1_1" 
+     .Component "cut2" 
+     .Material "Vacuum" 
+     .Curve "curve1:analytical1" 
+     .Thickness "-t1" 
+     .Width "w1" 
+     .RoundStart "False" 
+     .RoundEnd "False" 
+     .DeleteCurve "False" 
+     .GapType "2" 
+     .Create 
+End With 
+
+With TraceFromCurve 
+     .Reset 
+     .Name "cut1_2" 
+     .Component "cut2" 
+     .Material "Vacuum" 
+     .Curve "curve1:analytical2" 
+     .Thickness "-t1" 
+     .Width "w1" 
+     .RoundStart "False" 
+     .RoundEnd "False" 
+     .DeleteCurve "False" 
+     .GapType "2" 
+     .Create 
+End With
+
+'@ boolean subtract shapes: component1:RADIAL, cut2:cut1_1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:RADIAL", "cut2:cut1_1"
+
+'@ boolean subtract shapes: component1:RADIAL, cut2:cut1_2
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:RADIAL", "cut2:cut1_2"
+
+'@ define cylinder: cut2:solid1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "solid1" 
+     .Component "cut2" 
+     .Material "Vacuum" 
+     .OuterRadius "u3" 
+     .InnerRadius "0" 
+     .Axis "z" 
+     .Zrange "0", "t1" 
+     .Xcenter "x1" 
+     .Ycenter "y1" 
+     .Segments "0" 
+     .Create 
+End With
+
+'@ boolean subtract shapes: component1:GND_, cut2:solid1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:GND_", "cut2:solid1"
+
+'@ define cylinder: cut2:solid1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "solid1" 
+     .Component "cut2" 
+     .Material "Vacuum" 
+     .OuterRadius "u1" 
+     .InnerRadius "u2" 
+     .Axis "z" 
+     .Zrange "t", "h+t" 
+     .Xcenter "x1" 
+     .Ycenter "y1" 
+     .Segments "0" 
+     .Create 
+End With
+
+'@ boolean subtract shapes: component1:GND, cut2:solid1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:GND", "cut2:solid1"
+
+'@ define cylinder: cut2:solid1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "solid1" 
+     .Component "cut2" 
+     .Material "Copper (annealed)" 
+     .OuterRadius "u1" 
+     .InnerRadius "u2" 
+     .Axis "z" 
+     .Zrange "0", "h+t" 
+     .Xcenter "x1" 
+     .Ycenter "y1" 
+     .Segments "0" 
+     .Create 
+End With
+
+'@ define cylinder: cut2:solid2
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "solid2" 
+     .Component "cut2" 
+     .Material "PEC" 
+     .OuterRadius "u4" 
+     .InnerRadius "u1" 
+     .Axis "z" 
+     .Zrange "k", "0" 
+     .Xcenter "x1" 
+     .Ycenter "y1" 
+     .Segments "0" 
+     .Create 
+End With
+
+'@ define cylinder: cut2:solid3
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "solid3" 
+     .Component "cut2" 
+     .Material "Copper (annealed)" 
+     .OuterRadius "u5" 
+     .InnerRadius "u4" 
+     .Axis "z" 
+     .Zrange "k", "0" 
+     .Xcenter "x1" 
+     .Ycenter "y1" 
+     .Segments "0" 
+     .Create 
+End With
+
+'@ pick center point
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Pick.PickCenterpointFromId "cut2:solid2", "1"
+
+'@ define port: 1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Port 
+     .Reset 
+     .PortNumber "1" 
+     .Label ""
+     .Folder ""
+     .NumberOfModes "1"
+     .AdjustPolarization "False"
+     .PolarizationAngle "0.0"
+     .ReferencePlaneDistance "0"
+     .TextSize "50"
+     .TextMaxLimit "1"
+     .Coordinates "Full"
+     .Orientation "xmin"
+     .PortOnBound "True"
+     .ClipPickedPortToBound "False"
+     .Xrange "-49.859588139535", "-49.859588139535"
+     .Yrange "-49.859588139535", "49.859588139535"
+     .Zrange "-39.859588139535", "35.731708139535"
+     .XrangeAdd "0.0", "0.0"
+     .YrangeAdd "0.0", "0.0"
+     .ZrangeAdd "0.0", "0.0"
+     .SingleEnded "False"
+     .WaveguideMonitor "False"
+     .Create 
+End With
+
+'@ delete port: port1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Port.Delete "1"
+
+'@ clear picks
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Pick.ClearAllPicks
+
+'@ pick face
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Pick.PickFaceFromId "cut2:solid2", "1"
+
+'@ define port: 1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Port 
+     .Reset 
+     .PortNumber "1" 
+     .Label ""
+     .Folder ""
+     .NumberOfModes "1"
+     .AdjustPolarization "False"
+     .PolarizationAngle "0.0"
+     .ReferencePlaneDistance "0"
+     .TextSize "50"
+     .TextMaxLimit "1"
+     .Coordinates "Picks"
+     .Orientation "positive"
+     .PortOnBound "False"
+     .ClipPickedPortToBound "False"
+     .Xrange "-1.8", "1.8"
+     .Yrange "-6.8", "-3.2"
+     .Zrange "-5", "-5"
+     .XrangeAdd "0.0", "0.0"
+     .YrangeAdd "0.0", "0.0"
+     .ZrangeAdd "0.0", "0.0"
+     .SingleEnded "False"
+     .WaveguideMonitor "False"
+     .Create 
+End With
+
+'@ define curve analytical: curve1:analytical3
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With AnalyticalCurve
+     .Reset 
+     .Name "analytical3" 
+     .Curve "curve1" 
+     .LawX "t" 
+     .LawY "sqrt(l2^2/4-t^2)-w1/2" 
+     .LawZ "h+t1+t1" 
+     .ParameterRange "-l2/2", "l2/2*cos(gama/180*pi)" 
+     .Create
+End With
+
+'@ define curve analytical: curve1:analytical4
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With AnalyticalCurve
+     .Reset 
+     .Name "analytical4" 
+     .Curve "curve1" 
+     .LawX "t" 
+     .LawY "-sqrt(l2^2/4-t^2)+w1/2" 
+     .LawZ "h+t1+t1" 
+     .ParameterRange "l2/2*cos(sigma/180*pi)", "l2/2" 
+     .Create
+End With
+
+
+'@ define tracefromcurves: cut2:solid1
+_*
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With TraceFromCurve 
+     .Reset 
+     .Name "solid1_1" 
+     .Component "cut2" 
+     .Material "Copper (annealed)" 
+     .Curve "curve1:analytical3" 
+     .Thickness "-t1" 
+     .Width "w1" 
+     .RoundStart "False" 
+     .RoundEnd "False" 
+     .DeleteCurve "False" 
+     .GapType "2" 
+     .Create 
+End With 
+
+With TraceFromCurve 
+     .Reset 
+     .Name "solid1_2" 
+     .Component "cut2" 
+     .Material "Copper (annealed)" 
+     .Curve "curve1:analytical4" 
+     .Thickness "-t1" 
+     .Width "w1" 
+     .RoundStart "False" 
+     .RoundEnd "False" 
+     .DeleteCurve "False" 
+     .GapType "2" 
+     .Create 
+End With
+
+'@ boolean subtract shapes: component1:RADIAL, cut2:solid1_1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:RADIAL", "cut2:solid1_1"
+
+'@ boolean subtract shapes: component1:RADIAL, cut2:solid1_2
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:RADIAL", "cut2:solid1_2"
+
+'@ rename block: component1:GND to: component1:sub
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Rename "component1:GND", "sub"
+
+'@ define cylinder: cut2:short
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "short" 
+     .Component "cut2" 
+     .Material "Vacuum" 
+     .OuterRadius "z1" 
+     .InnerRadius "0" 
+     .Axis "z" 
+     .Zrange "t1", "h+t1" 
+     .Xcenter "x2" 
+     .Ycenter "y2" 
+     .Segments "0" 
+     .Create 
+End With
+
+'@ boolean subtract shapes: component1:sub, cut2:short
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:sub", "cut2:short"
+
+'@ define cylinder: cut2:short_1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "short_1" 
+     .Component "cut2" 
+     .Material "Copper (annealed)" 
+     .OuterRadius "z1" 
+     .InnerRadius "0" 
+     .Axis "z" 
+     .Zrange "t1", "h+t1" 
+     .Xcenter "x2" 
+     .Ycenter "y2" 
+     .Segments "0" 
+     .Create 
+End With
+
+'@ define brick: cut2:cut7
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Brick
+     .Reset 
+     .Name "cut7" 
+     .Component "cut2" 
+     .Material "Vacuum" 
+     .Xrange "-w2/2", "w2/2" 
+     .Yrange "l1/2-0.1", "x+0.1" 
+     .Zrange "h+t1", "h+t1+t1" 
+     .Create
+End With
+
+'@ boolean subtract shapes: component1:RADIAL, cut2:cut7
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:RADIAL", "cut2:cut7"
+
+'@ define brick: cut2:cut8
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Brick
+     .Reset 
+     .Name "cut8" 
+     .Component "cut2" 
+     .Material "Vacuum" 
+     .Xrange "-w2/2", "w2/2" 
+     .Yrange "-x-0.1", "-l1/2+0.1" 
+     .Zrange "h+t1", "h+t1+t1" 
+     .Create
+End With
+
+'@ boolean subtract shapes: component1:RADIAL, cut2:cut8
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:RADIAL", "cut2:cut8"
+
+'@ define time domain solver parameters
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Mesh.SetCreator "High Frequency" 
+
+With Solver 
+     .Method "Hexahedral"
+     .CalculationType "TD-S"
+     .StimulationPort "All"
+     .StimulationMode "All"
+     .SteadyStateLimit "-40"
+     .MeshAdaption "False"
+     .AutoNormImpedance "False"
+     .NormingImpedance "50"
+     .CalculateModesOnly "False"
+     .SParaSymmetry "False"
+     .StoreTDResultsInCache  "False"
+     .RunDiscretizerOnly "False"
+     .FullDeembedding "False"
+     .SuperimposePLWExcitation "False"
+     .UseSensitivityAnalysis "False"
+End With
+
+'@ set PBA version
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Discretizer.PBAVersion "2023101624"
+
+'@ define special time domain solver parameters
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+'STEADY STATE
+With Solver
+     .SteadyStateDurationType "Number of pulses"
+     .NumberOfPulseWidths "100"
+     .SteadyStateDurationTime "30"
+     .SteadyStateDurationTimeAsDistance "1954.38"
+     .StopCriteriaShowExcitation "False"
+     .RemoveAllStopCriteria
+     .AddStopCriterion "All S-Parameters", "0.004", "1", "False"
+     .AddStopCriterion "Transmission S-Parameters", "0.004", "1", "False"
+     .AddStopCriterion "Reflection S-Parameters", "0.004", "1", "False"
+     .AddStopCriterion "All Probes", "0.004", "1", "False"
+     .AddStopCriterion "All Radiated Powers", "0.004", "1", "False"
+     .AddStopCriterion "All Voltage-Current Monitors", "0.004", "1", "False"
+End With
+
+'GENERAL
+With Solver
+     .TimeStepStabilityFactor "1.0"
+     .RestartAfterInstabilityAbort "True"
+     .AutomaticTimeSignalSampling "True"
+     .SuppressTimeSignalStorage "False"
+     .ConsiderExcitationForFreqSamplingRate "False"
+     .UseBroadBandPhaseShift "False"
+     .SetBroadBandPhaseShiftLowerBoundFac "0.1"
+     .SetPortShieldingType "NONE"
+     .FrequencySamples "1001"
+     .FrequencyLogSamples "0"
+     .ConsiderTwoPortReciprocity "True"
+     .EnergyBalanceLimit "0.03"
+     .TDRComputation "False"
+     .TDRShift50Percent "False"
+     .AutoDetectIdenticalPorts "False"
+End With
+
+'HEXAHEDRAL
+With Solver
+     .SetPMLType "CONVPML"
+     .UseVariablePMLLayerSizeStandard "False"
+     .KeepPMLDepthDuringMeshAdaptationWithVariablePMLLayerSize "False"
+     .SetSubcycleState "Automatic"
+     .NormalizeToReferenceSignal "False"
+     .SetEnhancedPMLStabilization "Automatic"
+     .SimplifiedPBAMethod "False"
+     .SParaAdjustment "True"
+     .PrepareFarfields "True"
+     .MonitorFarFieldsNearToModel "True"
+     .DiscreteItemUpdate "Distributed"
+End With
+
+'MATERIAL
+With Solver
+     .SurfaceImpedanceOrder "10"
+     .ActivatePowerLoss1DMonitor "True"
+     .PowerLoss1DMonitorPerSolid "False"
+     .Use3DFieldMonitorForPowerLoss1DMonitor "True"
+     .UseFarFieldMonitorForPowerLoss1DMonitor "False"
+     .UseExtraFreqForPowerLoss1DMonitor "False"
+     .ResetPowerLoss1DMonitorExtraFreq
+     .SetDispNonLinearMaterialMonitor "False"
+     .ActivateDispNonLinearMaterialMonitor "0.0",  "0.05",  "0.0",  "False"
+     .SetTimePowerLossSIMaterialMonitor "False"
+     .ActivateTimePowerLossSIMaterialMonitor "0.0",  "0.05",  "0.0",  "False"
+     .SetTimePowerLossSIMaterialMonitorAverage "False"
+     .SetTimePowerLossSIMaterialMonitorAverageRepPeriod "0.0"
+     .TimePowerLossSIMaterialMonitorPerSolid "False"
+     .ActivateSpaceMaterial3DMonitor "False"
+     .Use3DFieldMonitorForSpaceMaterial3DMonitor "True"
+     .UseExtraFreqForSpaceMaterial3DMonitor "False"
+     .ResetSpaceMaterial3DMonitorExtraFreq
+     .SetHFTDDispUpdateScheme "Automatic"
+End With
+
+'AR-FILTER
+With Solver
+     .UseArfilter "False"
+     .ArMaxEnergyDeviation "0.1"
+     .ArPulseSkip "1"
+End With
+
+'WAVEGUIDE
+With Solver
+     .WaveguidePortGeneralized "True"
+     .WaveguidePortModeTracking "False"
+     .WaveguidePortROM "False"
+     .DispEpsFullDeembedding "False"
+     .SetSamplesFullDeembedding "20"
+     .AbsorbUnconsideredModeFields "Automatic"
+     .SetModeFreqFactor "0.5"
+     .AdaptivePortMeshing "True"
+     .AccuracyAdaptivePortMeshing "1"
+     .PassesAdaptivePortMeshing "4"
+End With
+
+'HEXAHEDRAL TLM
+With Solver
+     .AnisotropicSheetSurfaceType "0"
+     .MultiStrandedCableRoute "False"
+     .UseAbsorbingBoundary "True"
+     .UseDoublePrecision "False"
+     .AllowMaterialOverlap "True"
+     .ExcitePlanewaveNearModel "False"
+     .SetGroundPlane "False"
+     .GroundPlane "x", "0.0"
+     .NumberOfLayers "5"
+     .AverageFieldProbe "False"
+     .NormalizeToGaussian "True"
+     .TimeSignalSamplingFactor "1"
+     .SurfaceCurrentOnMesh "False"
+     .LossyMetalAsTranslucent "False"
+End With
+
+'TLM POSTPROCESSING
+With Solver
+     .ResetSettings
+     .CalculateNearFieldOnCylindricalSurfaces "false", "Coarse" 
+     .CylinderGridCustomStep "1" 
+     .CalculateNearFieldOnCircularCuts "false" 
+     .CylinderBaseCenter "0", "0", "0" 
+     .CylinderRadius "3" 
+     .CylinderHeight "3" 
+     .CylinderSpacing "1" 
+     .CylinderResolution "2.0" 
+     .CylinderAllPolarization "true" 
+     .CylinderRadialAngularVerticalComponents "false" 
+     .CylinderMagnitudeOfTangentialConponent "false" 
+     .CylinderVm "true" 
+     .CylinderDBVm "false" 
+     .CylinderDBUVm "false" 
+     .CylinderAndFrontAxes "+y", "+z" 
+     .ApplyLinearPrediction "false" 
+     .Windowing "None" 
+     .LogScaleFrequency "false" 
+     .AutoFreqStep "true", "1"
+     .SetExcitationSignal "" 
+     .SaveSettings
+End With
+
+'@ arfilter settings for s-parameters
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Arfilter
+     .SetType "s-parameter" 
+     .SetAlgorithmType "Basic" 
+     .SetFirstTime "auto" 
+     .SetSkip "10" 
+     .SetMaxFrq "auto" 
+     .SetMaxOrder "40" 
+     .SetWindowLength "2" 
+End With
+
+'@ define special time domain solver parameters
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+'STEADY STATE
+With Solver
+     .SteadyStateDurationType "Number of pulses"
+     .NumberOfPulseWidths "100"
+     .SteadyStateDurationTime "30"
+     .SteadyStateDurationTimeAsDistance "1954.38"
+     .StopCriteriaShowExcitation "False"
+     .RemoveAllStopCriteria
+     .AddStopCriterion "All S-Parameters", "0.004", "1", "False"
+     .AddStopCriterion "Transmission S-Parameters", "0.004", "1", "False"
+     .AddStopCriterion "Reflection S-Parameters", "0.004", "1", "False"
+     .AddStopCriterion "All Probes", "0.004", "1", "False"
+     .AddStopCriterion "All Radiated Powers", "0.004", "1", "False"
+     .AddStopCriterion "All Voltage-Current Monitors", "0.004", "1", "False"
+End With
+
+'GENERAL
+With Solver
+     .TimeStepStabilityFactor "1.0"
+     .RestartAfterInstabilityAbort "True"
+     .AutomaticTimeSignalSampling "True"
+     .SuppressTimeSignalStorage "False"
+     .ConsiderExcitationForFreqSamplingRate "False"
+     .UseBroadBandPhaseShift "False"
+     .SetBroadBandPhaseShiftLowerBoundFac "0.1"
+     .SetPortShieldingType "NONE"
+     .FrequencySamples "1001"
+     .FrequencyLogSamples "0"
+     .ConsiderTwoPortReciprocity "True"
+     .EnergyBalanceLimit "0.03"
+     .TDRComputation "False"
+     .TDRShift50Percent "False"
+     .AutoDetectIdenticalPorts "False"
+End With
+
+'HEXAHEDRAL
+With Solver
+     .SetPMLType "CONVPML"
+     .UseVariablePMLLayerSizeStandard "False"
+     .KeepPMLDepthDuringMeshAdaptationWithVariablePMLLayerSize "False"
+     .SetSubcycleState "Automatic"
+     .NormalizeToReferenceSignal "False"
+     .SetEnhancedPMLStabilization "Automatic"
+     .SimplifiedPBAMethod "False"
+     .SParaAdjustment "True"
+     .PrepareFarfields "True"
+     .MonitorFarFieldsNearToModel "True"
+     .DiscreteItemUpdate "Distributed"
+End With
+
+'MATERIAL
+With Solver
+     .SurfaceImpedanceOrder "10"
+     .ActivatePowerLoss1DMonitor "True"
+     .PowerLoss1DMonitorPerSolid "False"
+     .Use3DFieldMonitorForPowerLoss1DMonitor "True"
+     .UseFarFieldMonitorForPowerLoss1DMonitor "False"
+     .UseExtraFreqForPowerLoss1DMonitor "False"
+     .ResetPowerLoss1DMonitorExtraFreq
+     .SetDispNonLinearMaterialMonitor "False"
+     .ActivateDispNonLinearMaterialMonitor "0.0",  "0.05",  "0.0",  "False"
+     .SetTimePowerLossSIMaterialMonitor "False"
+     .ActivateTimePowerLossSIMaterialMonitor "0.0",  "0.05",  "0.0",  "False"
+     .SetTimePowerLossSIMaterialMonitorAverage "False"
+     .SetTimePowerLossSIMaterialMonitorAverageRepPeriod "0.0"
+     .TimePowerLossSIMaterialMonitorPerSolid "False"
+     .ActivateSpaceMaterial3DMonitor "False"
+     .Use3DFieldMonitorForSpaceMaterial3DMonitor "True"
+     .UseExtraFreqForSpaceMaterial3DMonitor "False"
+     .ResetSpaceMaterial3DMonitorExtraFreq
+     .SetHFTDDispUpdateScheme "Automatic"
+End With
+
+'AR-FILTER
+With Solver
+     .UseArfilter "True"
+     .ArMaxEnergyDeviation "0.1"
+     .ArPulseSkip "1"
+End With
+
+'WAVEGUIDE
+With Solver
+     .WaveguidePortGeneralized "True"
+     .WaveguidePortModeTracking "False"
+     .WaveguidePortROM "False"
+     .DispEpsFullDeembedding "False"
+     .SetSamplesFullDeembedding "20"
+     .AbsorbUnconsideredModeFields "Automatic"
+     .SetModeFreqFactor "0.5"
+     .AdaptivePortMeshing "True"
+     .AccuracyAdaptivePortMeshing "1"
+     .PassesAdaptivePortMeshing "4"
+End With
+
+'HEXAHEDRAL TLM
+With Solver
+     .AnisotropicSheetSurfaceType "0"
+     .MultiStrandedCableRoute "False"
+     .UseAbsorbingBoundary "True"
+     .UseDoublePrecision "False"
+     .AllowMaterialOverlap "True"
+     .ExcitePlanewaveNearModel "False"
+     .SetGroundPlane "False"
+     .GroundPlane "x", "0.0"
+     .NumberOfLayers "5"
+     .AverageFieldProbe "False"
+     .NormalizeToGaussian "True"
+     .TimeSignalSamplingFactor "1"
+     .SurfaceCurrentOnMesh "False"
+     .LossyMetalAsTranslucent "False"
+End With
+
+'TLM POSTPROCESSING
+With Solver
+     .ResetSettings
+     .CalculateNearFieldOnCylindricalSurfaces "false", "Coarse" 
+     .CylinderGridCustomStep "1" 
+     .CalculateNearFieldOnCircularCuts "false" 
+     .CylinderBaseCenter "0", "0", "0" 
+     .CylinderRadius "3" 
+     .CylinderHeight "3" 
+     .CylinderSpacing "1" 
+     .CylinderResolution "2.0" 
+     .CylinderAllPolarization "true" 
+     .CylinderRadialAngularVerticalComponents "false" 
+     .CylinderMagnitudeOfTangentialConponent "false" 
+     .CylinderVm "true" 
+     .CylinderDBVm "false" 
+     .CylinderDBUVm "false" 
+     .CylinderAndFrontAxes "+y", "+z" 
+     .ApplyLinearPrediction "false" 
+     .Windowing "None" 
+     .LogScaleFrequency "false" 
+     .AutoFreqStep "true", "1"
+     .SetExcitationSignal "" 
+     .SaveSettings
+End With
+
+'@ delete shape: cut2:solid2
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Delete "cut2:solid2"
+
+'@ delete shape: cut2:solid3
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Delete "cut2:solid3"
+
+'@ delete port: port1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Port.Delete "1"
+
+'@ pick center point
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Pick.PickCenterpointFromId "cut2:solid1", "1"
+
+'@ define discrete port: 1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With DiscretePort 
+     .Reset 
+     .PortNumber "1" 
+     .Type "SParameter"
+     .Label ""
+     .Folder ""
+     .Impedance "50.0"
+     .Voltage "1.0"
+     .Current "1.0"
+     .Monitor "True"
+     .Radius "0.0"
+     .SetP1 "True", "-1.9490859162597e-17", "-5", "0"
+     .SetP2 "False", "0.0", "0.0", "0.0"
+     .InvertDirection "False"
+     .LocalCoordinates "False"
+     .Wire ""
+     .Position "end1"
+     .Create 
+End With
+
+'@ define special time domain solver parameters
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+'STEADY STATE
+With Solver
+     .SteadyStateDurationType "Number of pulses"
+     .NumberOfPulseWidths "20"
+     .SteadyStateDurationTime "30"
+     .SteadyStateDurationTimeAsDistance "1954.38"
+     .StopCriteriaShowExcitation "False"
+     .RemoveAllStopCriteria
+     .AddStopCriterion "All S-Parameters", "0.004", "1", "False"
+     .AddStopCriterion "Transmission S-Parameters", "0.004", "1", "False"
+     .AddStopCriterion "Reflection S-Parameters", "0.004", "1", "False"
+     .AddStopCriterion "All Probes", "0.004", "1", "False"
+     .AddStopCriterion "All Radiated Powers", "0.004", "1", "False"
+     .AddStopCriterion "All Voltage-Current Monitors", "0.004", "1", "False"
+End With
+
+'GENERAL
+With Solver
+     .TimeStepStabilityFactor "1.0"
+     .RestartAfterInstabilityAbort "True"
+     .AutomaticTimeSignalSampling "True"
+     .SuppressTimeSignalStorage "False"
+     .ConsiderExcitationForFreqSamplingRate "False"
+     .UseBroadBandPhaseShift "False"
+     .SetBroadBandPhaseShiftLowerBoundFac "0.1"
+     .SetPortShieldingType "NONE"
+     .FrequencySamples "1001"
+     .FrequencyLogSamples "0"
+     .ConsiderTwoPortReciprocity "True"
+     .EnergyBalanceLimit "0.03"
+     .TDRComputation "False"
+     .TDRShift50Percent "False"
+     .AutoDetectIdenticalPorts "False"
+End With
+
+'HEXAHEDRAL
+With Solver
+     .SetPMLType "CONVPML"
+     .UseVariablePMLLayerSizeStandard "False"
+     .KeepPMLDepthDuringMeshAdaptationWithVariablePMLLayerSize "False"
+     .SetSubcycleState "Automatic"
+     .NormalizeToReferenceSignal "False"
+     .SetEnhancedPMLStabilization "Automatic"
+     .SimplifiedPBAMethod "False"
+     .SParaAdjustment "True"
+     .PrepareFarfields "True"
+     .MonitorFarFieldsNearToModel "True"
+     .DiscreteItemUpdate "Distributed"
+End With
+
+'MATERIAL
+With Solver
+     .SurfaceImpedanceOrder "10"
+     .ActivatePowerLoss1DMonitor "True"
+     .PowerLoss1DMonitorPerSolid "False"
+     .Use3DFieldMonitorForPowerLoss1DMonitor "True"
+     .UseFarFieldMonitorForPowerLoss1DMonitor "False"
+     .UseExtraFreqForPowerLoss1DMonitor "False"
+     .ResetPowerLoss1DMonitorExtraFreq
+     .SetDispNonLinearMaterialMonitor "False"
+     .ActivateDispNonLinearMaterialMonitor "0.0",  "0.05",  "0.0",  "False"
+     .SetTimePowerLossSIMaterialMonitor "False"
+     .ActivateTimePowerLossSIMaterialMonitor "0.0",  "0.05",  "0.0",  "False"
+     .SetTimePowerLossSIMaterialMonitorAverage "False"
+     .SetTimePowerLossSIMaterialMonitorAverageRepPeriod "0.0"
+     .TimePowerLossSIMaterialMonitorPerSolid "False"
+     .ActivateSpaceMaterial3DMonitor "False"
+     .Use3DFieldMonitorForSpaceMaterial3DMonitor "True"
+     .UseExtraFreqForSpaceMaterial3DMonitor "False"
+     .ResetSpaceMaterial3DMonitorExtraFreq
+     .SetHFTDDispUpdateScheme "Automatic"
+End With
+
+'AR-FILTER
+With Solver
+     .UseArfilter "False"
+     .ArMaxEnergyDeviation "0.1"
+     .ArPulseSkip "1"
+End With
+
+'WAVEGUIDE
+With Solver
+     .WaveguidePortGeneralized "True"
+     .WaveguidePortModeTracking "False"
+     .WaveguidePortROM "False"
+     .DispEpsFullDeembedding "False"
+     .SetSamplesFullDeembedding "20"
+     .AbsorbUnconsideredModeFields "Automatic"
+     .SetModeFreqFactor "0.5"
+     .AdaptivePortMeshing "True"
+     .AccuracyAdaptivePortMeshing "1"
+     .PassesAdaptivePortMeshing "4"
+End With
+
+'HEXAHEDRAL TLM
+With Solver
+     .AnisotropicSheetSurfaceType "0"
+     .MultiStrandedCableRoute "False"
+     .UseAbsorbingBoundary "True"
+     .UseDoublePrecision "False"
+     .AllowMaterialOverlap "True"
+     .ExcitePlanewaveNearModel "False"
+     .SetGroundPlane "False"
+     .GroundPlane "x", "0.0"
+     .NumberOfLayers "5"
+     .AverageFieldProbe "False"
+     .NormalizeToGaussian "True"
+     .TimeSignalSamplingFactor "1"
+     .SurfaceCurrentOnMesh "False"
+     .LossyMetalAsTranslucent "False"
+End With
+
+'TLM POSTPROCESSING
+With Solver
+     .ResetSettings
+     .CalculateNearFieldOnCylindricalSurfaces "false", "Coarse" 
+     .CylinderGridCustomStep "1" 
+     .CalculateNearFieldOnCircularCuts "false" 
+     .CylinderBaseCenter "0", "0", "0" 
+     .CylinderRadius "3" 
+     .CylinderHeight "3" 
+     .CylinderSpacing "1" 
+     .CylinderResolution "2.0" 
+     .CylinderAllPolarization "true" 
+     .CylinderRadialAngularVerticalComponents "false" 
+     .CylinderMagnitudeOfTangentialConponent "false" 
+     .CylinderVm "true" 
+     .CylinderDBVm "false" 
+     .CylinderDBUVm "false" 
+     .CylinderAndFrontAxes "+y", "+z" 
+     .ApplyLinearPrediction "false" 
+     .Windowing "None" 
+     .LogScaleFrequency "false" 
+     .AutoFreqStep "true", "1"
+     .SetExcitationSignal "" 
+     .SaveSettings
+End With
+
