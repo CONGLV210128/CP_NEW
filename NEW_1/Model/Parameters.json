@@ -1,9 +1,9 @@
 {
     "parameters": [
         {
-            "expr": "15",
+            "expr": "12",
             "name": "x",
-            "value": "15"
+            "value": "12"
         },
         {
             "expr": "0.03556",
@@ -86,9 +86,29 @@
             "value": "1.83556"
         },
         {
-            "expr": "16",
+            "expr": "14",
             "name": "l2",
-            "value": "16"
+            "value": "14"
+        },
+        {
+            "expr": "0.5",
+            "name": "z1",
+            "value": "0.5"
+        },
+        {
+            "expr": "-8",
+            "name": "x2",
+            "value": "-8"
+        },
+        {
+            "expr": "2",
+            "name": "y2",
+            "value": "2"
+        },
+        {
+            "expr": "0.3",
+            "name": "w2",
+            "value": "0.3"
         }
     ],
     "version": 1

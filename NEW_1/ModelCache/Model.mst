@@ -1,4 +1,4 @@
-component1:GND
+component1:sub
 0
 1
 component1:GND_
@@ -14,5 +14,8 @@ cut2:solid2
 0
 1
 cut2:solid3
+0
+1
+cut2:short_1
 0
 1

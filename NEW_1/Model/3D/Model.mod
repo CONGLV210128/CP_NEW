@@ -222,7 +222,7 @@ With Cylinder
      .Name "GND" 
      .Component "component1" 
      .Material "FR-4 (loss free)" 
-     .OuterRadius "x" 
+     .OuterRadius "x+2" 
      .InnerRadius "0" 
      .Axis "z" 
      .Zrange "t", "t+h" 
@@ -618,9 +618,119 @@ With AnalyticalCurve
      .Name "analytical4" 
      .Curve "curve1" 
      .LawX "t" 
-     .LawY "-sqrt(l2^2/4-t^2)" 
+     .LawY "-sqrt(l2^2/4-t^2)+w1/2" 
      .LawZ "h+t1+t1" 
      .ParameterRange "l2/2*cos(sigma/180*pi)", "l2/2" 
      .Create
 End With
+
+
+'@ define tracefromcurves: cut2:solid1
+_*
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With TraceFromCurve 
+     .Reset 
+     .Name "solid1_1" 
+     .Component "cut2" 
+     .Material "Copper (annealed)" 
+     .Curve "curve1:analytical3" 
+     .Thickness "-t1" 
+     .Width "w1" 
+     .RoundStart "False" 
+     .RoundEnd "False" 
+     .DeleteCurve "False" 
+     .GapType "2" 
+     .Create 
+End With 
+
+With TraceFromCurve 
+     .Reset 
+     .Name "solid1_2" 
+     .Component "cut2" 
+     .Material "Copper (annealed)" 
+     .Curve "curve1:analytical4" 
+     .Thickness "-t1" 
+     .Width "w1" 
+     .RoundStart "False" 
+     .RoundEnd "False" 
+     .DeleteCurve "False" 
+     .GapType "2" 
+     .Create 
+End With
+
+'@ boolean subtract shapes: component1:RADIAL, cut2:solid1_1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:RADIAL", "cut2:solid1_1"
+
+'@ boolean subtract shapes: component1:RADIAL, cut2:solid1_2
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:RADIAL", "cut2:solid1_2"
+
+'@ rename block: component1:GND to: component1:sub
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Rename "component1:GND", "sub"
+
+'@ define cylinder: cut2:short
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "short" 
+     .Component "cut2" 
+     .Material "Vacuum" 
+     .OuterRadius "z1" 
+     .InnerRadius "0" 
+     .Axis "z" 
+     .Zrange "t1", "h+t1" 
+     .Xcenter "x2" 
+     .Ycenter "y2" 
+     .Segments "0" 
+     .Create 
+End With
+
+'@ boolean subtract shapes: component1:sub, cut2:short
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:sub", "cut2:short"
+
+'@ define cylinder: cut2:short_1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "short_1" 
+     .Component "cut2" 
+     .Material "Copper (annealed)" 
+     .OuterRadius "z1" 
+     .InnerRadius "0" 
+     .Axis "z" 
+     .Zrange "t1", "h+t1" 
+     .Xcenter "x2" 
+     .Ycenter "y2" 
+     .Segments "0" 
+     .Create 
+End With
+
+'@ define brick: cut2:cut7
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Brick
+     .Reset 
+     .Name "cut7" 
+     .Component "cut2" 
+     .Material "Vacuum" 
+     .Xrange "-w2/2", "w2/2" 
+     .Yrange "l1/2-0.1", "x+0.1" 
+     .Zrange "h+t1", "h+t1+t1" 
+     .Create
+End With
+
+'@ boolean subtract shapes: component1:RADIAL, cut2:cut7
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:RADIAL", "cut2:cut7"
 
