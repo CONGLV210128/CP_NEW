@@ -1,0 +1,79 @@
+*** File Version: 21.00
+
+Number of ports: 0
+Portnames:
+Modenumbers:
+Porttypes:
+Portlabels:
+StaticSources:
+ThermalSources:
+FloquetPortNames:
+FloquetPortModes:
+SchematicPortNames:
+SchematicPortLabels:
+Terminals:
+StaticToReferenceTable:
+ThermalToReferenceTable:
+TerminalToReferenceTable:
+PortToReferenceTable:
+FloquetToReferenceTable:
+SchematicToReferenceTable:
+StaticSourceGroups:
+ThermalSourceGroups:
+TerminalSourceGroups:
+PortSourceGroups:
+FloquetPortSourceGroups:
+SchematicPortSourceGroups:
+Number of frequency-points: 0
+Fmin: 3.000000e+08
+Fmax: 4.000000e+09
+Fscale: 1.000000e+09
+
+
+
+
+
+*** newmonitor
+monname: "farfield (f=0.3)"
+nmonfrequencies: 1
+monfrequencies: "0.29999999999999999" 
+montype: 18
+mondomain: 1
+mon_fmin: ""
+mon_fmax: ""
+mon_nfSteps: ""
+*** endmonitor
+
+*** newmonitor
+monname: "farfield (f=4)"
+nmonfrequencies: 1
+monfrequencies: "4" 
+montype: 18
+mondomain: 1
+mon_fmin: ""
+mon_fmax: ""
+mon_nfSteps: ""
+*** endmonitor
+
+*** newmonitor
+monname: "e-field (f=4)"
+nmonfrequencies: 1
+monfrequencies: "4" 
+montype: 0
+mondomain: 1
+mon_fmin: ""
+mon_fmax: ""
+mon_nfSteps: ""
+*** endmonitor
+
+*** newmonitor
+monname: "e-field (f=0.3)"
+nmonfrequencies: 1
+monfrequencies: "0.29999999999999999" 
+montype: 0
+mondomain: 1
+mon_fmin: ""
+mon_fmax: ""
+mon_nfSteps: ""
+*** endmonitor
+

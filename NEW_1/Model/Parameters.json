@@ -1,0 +1,50 @@
+{
+    "parameters": [
+        {
+            "expr": "15",
+            "name": "x",
+            "value": "15"
+        },
+        {
+            "expr": "0.03556",
+            "name": "t",
+            "value": "0.03556"
+        },
+        {
+            "expr": "0.8",
+            "name": "h",
+            "value": "0.8"
+        },
+        {
+            "expr": "3",
+            "name": "R0",
+            "value": "3"
+        },
+        {
+            "expr": "20",
+            "name": "l1",
+            "value": "20"
+        },
+        {
+            "expr": "0.4",
+            "name": "w1",
+            "value": "0.4"
+        },
+        {
+            "expr": "30",
+            "name": "gama",
+            "value": "30"
+        },
+        {
+            "expr": "0.03556",
+            "name": "t1",
+            "value": "0.03556"
+        },
+        {
+            "expr": "150",
+            "name": "sigma",
+            "value": "150"
+        }
+    ],
+    "version": 1
+}
