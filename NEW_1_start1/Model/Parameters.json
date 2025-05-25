@@ -1,0 +1,50 @@
+{
+    "parameters": [
+        {
+            "expr": "13",
+            "name": "x",
+            "value": "13"
+        },
+        {
+            "expr": "13",
+            "name": "y",
+            "value": "13"
+        },
+        {
+            "expr": "0.03556",
+            "name": "t1",
+            "value": "0.03556"
+        },
+        {
+            "expr": "0.8",
+            "name": "h",
+            "value": "0.8"
+        },
+        {
+            "expr": "3.6",
+            "name": "ROUT_GND",
+            "value": "3.6"
+        },
+        {
+            "expr": "4.5",
+            "name": "ROUT_RAD",
+            "value": "4.5"
+        },
+        {
+            "expr": "0.5",
+            "name": "ROUT_SHORT",
+            "value": "0.5"
+        },
+        {
+            "expr": "-3",
+            "name": "x2",
+            "value": "-3"
+        },
+        {
+            "expr": "0.5",
+            "name": "y2",
+            "value": "0.5"
+        }
+    ],
+    "version": 1
+}

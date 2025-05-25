@@ -38,6 +38,21 @@
          "name": "h2",
          "type": "float",
          "value": 0.8
+      },
+      {
+         "name": "r",
+         "type": "float",
+         "value": 5.1
+      },
+      {
+         "name": "w1",
+         "type": "float",
+         "value": 0.8
+      },
+      {
+         "name": "r1",
+         "type": "float",
+         "value": 2.0
       }
    ],
    "outputVariables": []

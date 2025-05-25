@@ -34,6 +34,21 @@
             "expr": "0.8",
             "name": "h2",
             "value": "0.8"
+        },
+        {
+            "expr": "5.1",
+            "name": "r",
+            "value": "5.1"
+        },
+        {
+            "expr": "0.8",
+            "name": "w1",
+            "value": "0.8"
+        },
+        {
+            "expr": "2",
+            "name": "r1",
+            "value": "2"
         }
     ],
     "version": 1

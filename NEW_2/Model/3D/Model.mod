@@ -284,3 +284,68 @@ With Cylinder
      .Create 
 End With
 
+'@ define curve analytical: curve1:analytical1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With AnalyticalCurve
+     .Reset 
+     .Name "analytical1" 
+     .Curve "curve1" 
+     .LawX "t" 
+     .LawY "sqrt(R^2-t^2)" 
+     .LawZ "t1+h1+t1+h2" 
+     .ParameterRange "0", "R" 
+     .Create
+End With
+
+
+'@ define curve analytical: curve1:analytical2
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With AnalyticalCurve
+     .Reset 
+     .Name "analytical2" 
+     .Curve "curve1" 
+     .LawX "t" 
+     .LawY "-sqrt(r^2-t^2)" 
+     .LawZ "t1+h1+t1+h2" 
+     .ParameterRange "-r", "r" 
+     .Create
+End With
+
+'@ define tracefromcurve: component1:OUT
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With TraceFromCurve 
+     .Reset 
+     .Name "OUT" 
+     .Component "component1" 
+     .Material "Copper (annealed)" 
+     .Curve "curve1:analytical1" 
+     .Thickness "t1" 
+     .Width "w1" 
+     .RoundStart "False" 
+     .RoundEnd "False" 
+     .DeleteCurve "False" 
+     .GapType "2" 
+     .Create 
+End With
+
+'@ define cylinder: component1:solid1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "solid1" 
+     .Component "component1" 
+     .Material "Copper (annealed)" 
+     .OuterRadius "r1" 
+     .InnerRadius "0" 
+     .Axis "z" 
+     .Zrange "t1+h1+t1+h2", "t1+h1+t1+h2+t1" 
+     .Xcenter "-0" 
+     .Ycenter "0" 
+     .Segments "0" 
+     .Create 
+End With
+

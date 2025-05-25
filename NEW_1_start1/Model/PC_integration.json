@@ -1,0 +1,54 @@
+{
+   "execution": {
+      "classname": "SMAPowerByEmagHPCFrame",
+      "libname": "SMAPowerByEmagUI"
+   },
+   "inputVariables": [
+      {
+         "name": "x",
+         "type": "float",
+         "value": 13.0
+      },
+      {
+         "name": "y",
+         "type": "float",
+         "value": 13.0
+      },
+      {
+         "name": "t1",
+         "type": "float",
+         "value": 0.03556
+      },
+      {
+         "name": "h",
+         "type": "float",
+         "value": 0.8
+      },
+      {
+         "name": "ROUT_GND",
+         "type": "float",
+         "value": 3.6
+      },
+      {
+         "name": "ROUT_RAD",
+         "type": "float",
+         "value": 4.5
+      },
+      {
+         "name": "ROUT_SHORT",
+         "type": "float",
+         "value": 0.5
+      },
+      {
+         "name": "x2",
+         "type": "float",
+         "value": -3.0
+      },
+      {
+         "name": "y2",
+         "type": "float",
+         "value": 0.5
+      }
+   ],
+   "outputVariables": []
+}
