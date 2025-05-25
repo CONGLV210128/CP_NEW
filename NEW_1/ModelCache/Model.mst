@@ -7,9 +7,12 @@ component1:GND_
 component1:RADIAL
 0
 1
-cut2:cut1_1
+cut2:solid1
 0
 1
-cut2:cut1_2
+cut2:solid2
+0
+1
+cut2:solid3
 0
 1

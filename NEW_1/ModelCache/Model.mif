@@ -4,8 +4,8 @@
 [PCB_IMPORT: False]
 [PCB_IMPORT_NEW: False]
 [DISABLE_FAST_LOAD: False]
-[BBOX:-49.859588139534878 49.859588139534878 -49.859588139534878 49.859588139534878 -34.859588139534878 35.731708139534916]
-[BBOX_STRUCTURE:-15 15 -15 15 0 0.87212000000004053]
+[BBOX:-49.859588139534878 49.859588139534878 -49.859588139534878 49.859588139534878 -39.859588139534878 35.731708139534916]
+[BBOX_STRUCTURE:-15 15 -15 15 -5 0.87212000000004053]
 [UNITS]
      .SetUnit "Length", "mm"
      .SetUnit "Temperature", "degC"
@@ -500,3 +500,27 @@ Solver.FrequencyRange "0.3", "4"
      .Transparency "0" 
      .Create
 [ENDMATERIAL]
+[WAVEGUIDE: 1]
+     .Label ""
+     .Folder ""
+     .NumberOfModes "1"
+     .AdjustPolarization "False"
+     .PolarizationAngle "0"
+     .ReferencePlaneDistance "0"
+     .TextSize "50"
+     .TextMaxLimit "1"
+     .Coordinates "Free"
+     .Orientation "zmin"
+     .PortOnBound "False"
+     .ClipPickedPortToBound "False"
+     .Xrange "0", "3.6000000000000001"
+     .Yrange "0", "3.5999999999999996"
+     .Zrange "0", "0"
+     .XrangeAdd "0.0", "0.0"
+     .YrangeAdd "0.0", "0.0"
+     .ZrangeAdd "0.0", "0.0"
+     .SingleEnded "False"
+     .WaveguideMonitor "False"
+     .ReferenceWCS "1.8", "1.8", "0", "0", "0", "-1", "0", "1", "0"
+(TRANSFORM) "1", "0", "0", "0", "1", "0", "0", "0", "1"| "-1.8", "-6.8", "-5"(ENDTRANSFORM)
+[ENDWAVEGUIDE]

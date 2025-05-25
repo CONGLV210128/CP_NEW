@@ -408,3 +408,219 @@ With TraceFromCurve
      .Create 
 End With
 
+'@ boolean subtract shapes: component1:RADIAL, cut2:cut1_1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:RADIAL", "cut2:cut1_1"
+
+'@ boolean subtract shapes: component1:RADIAL, cut2:cut1_2
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:RADIAL", "cut2:cut1_2"
+
+'@ define cylinder: cut2:solid1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "solid1" 
+     .Component "cut2" 
+     .Material "Vacuum" 
+     .OuterRadius "u3" 
+     .InnerRadius "0" 
+     .Axis "z" 
+     .Zrange "0", "t1" 
+     .Xcenter "x1" 
+     .Ycenter "y1" 
+     .Segments "0" 
+     .Create 
+End With
+
+'@ boolean subtract shapes: component1:GND_, cut2:solid1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:GND_", "cut2:solid1"
+
+'@ define cylinder: cut2:solid1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "solid1" 
+     .Component "cut2" 
+     .Material "Vacuum" 
+     .OuterRadius "u1" 
+     .InnerRadius "u2" 
+     .Axis "z" 
+     .Zrange "t", "h+t" 
+     .Xcenter "x1" 
+     .Ycenter "y1" 
+     .Segments "0" 
+     .Create 
+End With
+
+'@ boolean subtract shapes: component1:GND, cut2:solid1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Solid.Subtract "component1:GND", "cut2:solid1"
+
+'@ define cylinder: cut2:solid1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "solid1" 
+     .Component "cut2" 
+     .Material "Copper (annealed)" 
+     .OuterRadius "u1" 
+     .InnerRadius "u2" 
+     .Axis "z" 
+     .Zrange "k", "h+t" 
+     .Xcenter "x1" 
+     .Ycenter "y1" 
+     .Segments "0" 
+     .Create 
+End With
+
+'@ define cylinder: cut2:solid2
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "solid2" 
+     .Component "cut2" 
+     .Material "PEC" 
+     .OuterRadius "u4" 
+     .InnerRadius "u1" 
+     .Axis "z" 
+     .Zrange "k", "0" 
+     .Xcenter "x1" 
+     .Ycenter "y1" 
+     .Segments "0" 
+     .Create 
+End With
+
+'@ define cylinder: cut2:solid3
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Cylinder 
+     .Reset 
+     .Name "solid3" 
+     .Component "cut2" 
+     .Material "Copper (annealed)" 
+     .OuterRadius "u5" 
+     .InnerRadius "u4" 
+     .Axis "z" 
+     .Zrange "k", "0" 
+     .Xcenter "x1" 
+     .Ycenter "y1" 
+     .Segments "0" 
+     .Create 
+End With
+
+'@ pick center point
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Pick.PickCenterpointFromId "cut2:solid2", "1"
+
+'@ define port: 1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Port 
+     .Reset 
+     .PortNumber "1" 
+     .Label ""
+     .Folder ""
+     .NumberOfModes "1"
+     .AdjustPolarization "False"
+     .PolarizationAngle "0.0"
+     .ReferencePlaneDistance "0"
+     .TextSize "50"
+     .TextMaxLimit "1"
+     .Coordinates "Full"
+     .Orientation "xmin"
+     .PortOnBound "True"
+     .ClipPickedPortToBound "False"
+     .Xrange "-49.859588139535", "-49.859588139535"
+     .Yrange "-49.859588139535", "49.859588139535"
+     .Zrange "-39.859588139535", "35.731708139535"
+     .XrangeAdd "0.0", "0.0"
+     .YrangeAdd "0.0", "0.0"
+     .ZrangeAdd "0.0", "0.0"
+     .SingleEnded "False"
+     .WaveguideMonitor "False"
+     .Create 
+End With
+
+'@ delete port: port1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Port.Delete "1"
+
+'@ clear picks
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Pick.ClearAllPicks
+
+'@ pick face
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+Pick.PickFaceFromId "cut2:solid2", "1"
+
+'@ define port: 1
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With Port 
+     .Reset 
+     .PortNumber "1" 
+     .Label ""
+     .Folder ""
+     .NumberOfModes "1"
+     .AdjustPolarization "False"
+     .PolarizationAngle "0.0"
+     .ReferencePlaneDistance "0"
+     .TextSize "50"
+     .TextMaxLimit "1"
+     .Coordinates "Picks"
+     .Orientation "positive"
+     .PortOnBound "False"
+     .ClipPickedPortToBound "False"
+     .Xrange "-1.8", "1.8"
+     .Yrange "-6.8", "-3.2"
+     .Zrange "-5", "-5"
+     .XrangeAdd "0.0", "0.0"
+     .YrangeAdd "0.0", "0.0"
+     .ZrangeAdd "0.0", "0.0"
+     .SingleEnded "False"
+     .WaveguideMonitor "False"
+     .Create 
+End With
+
+'@ define curve analytical: curve1:analytical3
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With AnalyticalCurve
+     .Reset 
+     .Name "analytical3" 
+     .Curve "curve1" 
+     .LawX "t" 
+     .LawY "sqrt(l2^2/4-t^2)-w1/2" 
+     .LawZ "h+t1+t1" 
+     .ParameterRange "-l2/2", "l2/2*cos(gama/180*pi)" 
+     .Create
+End With
+
+'@ define curve analytical: curve1:analytical4
+
+'[VERSION]2024.1|33.0.1|20231016[/VERSION]
+With AnalyticalCurve
+     .Reset 
+     .Name "analytical4" 
+     .Curve "curve1" 
+     .LawX "t" 
+     .LawY "-sqrt(l2^2/4-t^2)" 
+     .LawZ "h+t1+t1" 
+     .ParameterRange "l2/2*cos(sigma/180*pi)", "l2/2" 
+     .Create
+End With
+
